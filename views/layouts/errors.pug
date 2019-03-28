@@ -1,0 +1,14 @@
+div.container
+  if (errors)
+    div.alert.alert-danger(role="alert")
+      each err in errors
+        p.m-0 #{err.msg}
+  if (success_msg.length)
+    div.alert.alert-success(role="alert")
+      p.m-0 #{success_msg}
+  if (error_msg.length)
+    div.alert.alert-danger(role="alert")
+      p.m-0 #{error_msg}
+  if (error.length)
+    div.alert.alert-danger(role="alert")
+      p.m-0 #{error}

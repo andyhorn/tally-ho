@@ -1,0 +1,49 @@
+extends layouts/layout
+block content
+  div.container-fluid.border.border-white.rounded.p-5.w-md-75
+    div.row
+      - let day = new Date();
+      - let today = day.toDateString()
+      - let viewing = new Date(currentDate)
+      - viewing = viewing.toDateString()
+      div.col.text-md-right.mb-3
+        p.m-0.p-0
+        | Today's Date: #{today}
+        br
+        | Viewing Date: #{viewing}
+    div.row.mb-3
+      div.col-md-6.text-left
+        h3 Total: #{total}
+      div.col-md-6.text-md-right.text-left
+        h3 #{user.Name}
+    div.row
+      div.col-12.container
+        form(method="post" action="/postTally")
+          input(type="hidden", name="date", value=currentDate)
+          div.form-group.row
+            div.col-12
+              input(type="text", placeholder="Number", name="number").form-control
+          div.form-group.row.m-0.mb-3.justify-content-center
+            div.col-md-3.row
+              div.col-md-6.m-0.p-1
+                button(type="submit").btn.btn-info.btn-block Submit
+              div.col-md-6.m-0.p-1
+                a(href="/clear?date=" + currentDate)
+                  button(type="button").btn.btn-info.btn-block Clear All
+            div.col-md-4.offset-md-5.row
+              div.col-md-5.m-0.p-1
+                a(href="/?date=" + prevDate) 
+                  button(type="button").btn.btn-info.btn-block Previous Day
+              div.col-md-4.m-0.p-1
+                - today = day.toLocaleDateString()
+                a(href="/?date=" + nextDate)
+                  button(type="button").btn.btn-info.btn-block Next Day
+              div.col-md-3.m-0.p-1
+                a(href="/?date=" + today)
+                  button(type="button").btn.btn-info.btn-block Today
+    div.row
+      div.col-12
+        div#tallies
+          dt.underline.mb-3 Tallies
+            each num in tallies
+              dd #{num}

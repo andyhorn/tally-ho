@@ -1,0 +1,27 @@
+extends layouts/layout
+block content
+  div.container.w-md-75.mt-5
+    h2 Administration
+    h5 Registered Users:
+    div.container-fluid
+      if (users && users.length)
+        each u in users
+          div.row.my-3.py-3.border-bottom.border-light
+            div.col-md-9
+              dt.mb-1 Name: #{u.Name}
+              dd.m-0 Username: #{u.Username}
+              dd.m-0 ID: #{u.Id}
+              dd.m-0 Role: #{u.Role}
+            div.col
+              div.row.justify-content-end
+                div.col-12.p-1
+                  a(href="/admin/edit?userId=" + u.Id)
+                    button(type="button").btn.btn-info.btn-block.p-1 Details
+              div.row.justify-content-end
+                div.col-12.p-1
+                  - if (u.Id != myId)
+                    a(href="admin/delete?userId=" + u.Id)
+                      button(type="button").btn.btn-danger.btn-block.p-1 Delete
+      else
+        div
+          p No users available

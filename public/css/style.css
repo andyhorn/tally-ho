@@ -1,0 +1,21 @@
+.bg-blue {
+  background-color:  #2B4570;
+}
+.text-white {
+  color: #A8D0DB; 
+}
+.underline {
+  text-decoration: underline; 
+}
+.navbar {
+
+  box-shadow: 2px 0 5px black;
+}
+@media screen and (min-width: 768px) {
+  .w-md-50 {
+    width: 50%;
+  }
+  .w-md-75 {
+    width: 75%; 
+  }
+}

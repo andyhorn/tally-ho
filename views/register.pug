@@ -1,0 +1,18 @@
+extends layouts/layout
+block content
+  h3.text-center Register
+  div.mt-5.mx-auto.w-md-50
+    form(method="post", action="/users/register")
+      div.form-group
+        label Username
+        input.form-control(type="text", name="username")
+      div.form-group
+        label Name
+        input.form-control(type="text", name="name")
+      div.form-group
+        label Password
+        input.form-control(type="password", name="password")
+      div.form-group
+        label Password Confirmation
+        input.form-control(type="password", name="passwordConfirmation")
+      input.btn.btn-success.btn-block(type="submit", value="Register!").

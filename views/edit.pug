@@ -1,0 +1,25 @@
+extends layouts/layout
+block content
+  div.container.w-md-75
+    h3.mb-5 Edit User
+    form(method="post", action="/admin/saveUser")
+      input(type="hidden", value=editUser.UserId, name="id")
+      div.form-group.w-md-50.mx-auto
+        label Username
+        input(type="text", name="username", value=editUser.Username).form-control
+      div.form-group.w-md-50.mx-auto
+        label Name
+        input(type="text", name="name", value=editUser.Name).form-control
+      div.form-group.w-md-50.mx-auto
+        label Role
+        select(name="role").form-control
+          - if (editUser.Role == 'User')
+              option(selected) User
+              option Admin
+          - else
+              option User
+              option(selected) Admin
+      div.form-group.w-md-50.mx-auto
+        label Password
+        input(type="text", name="password").form-control
+        button(type="submit").btn.btn-success.mt-5 Save

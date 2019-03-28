@@ -1,0 +1,36 @@
+html
+  head
+    block title
+      title Tally, ho!
+    meta(name="viewport", content="width=device-width,initial-scale=1.0")
+    link(rel="icon", type="image/x-icon", href="https://cdn.glitch.com/e28df1d6-5a05-45c8-930a-f2ef0a5dcba0%2Ftally_2.png?1552950288343")
+    block scripts
+      link(rel="stylesheet", href="/css/bootstrap.min.css")
+      link(rel="stylesheet", href="/css/style.css")
+      script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js", integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN", crossorigin="anonymous")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q", crossorigin="anonymous")
+      script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl", crossorigin="anonymous")
+  body.bg-blue.text-white
+    nav.navbar.navbar-expand-md.navbar-light.bg-light.mb-5
+      a.navbar-brand(href="/") Tally, ho!
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar-collapse", aria-controls="navbar-collapse", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div.collapse.navbar-collapse#navbar-collapse
+        div.navbar-nav.mr-auto
+        if (user)
+          if (user.Role == 'Admin')
+            a.nav-item.nav-link.btn.btn-outline-danger.m-1.btn-sm(href="/admin") Admin
+          a.nav-item.nav-link(href="/").btn.btn-outline-primary.btn-sm.m-1 Dashboard
+          a.nav-item.nav-link(href="/users/logout").btn.btn-outline-info.btn-sm.m-1 Logout
+        else
+          a.nav-item.nav-link(href="/users/login").btn.btn-outline-primary.m-1.btn-sm Login
+          a.nav-item.nav-link(href="/users/register").btn.btn-outline-info.m-1.btn-sm Register
+    
+    block errors
+      include errors
+    
+    div.container-fluid.mt-3
+      block content
+    
+    div.container-fluid
+      block footer

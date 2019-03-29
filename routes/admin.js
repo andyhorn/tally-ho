@@ -1,7 +1,7 @@
 const express        = require('express');
 const app            = express();
 const router         = express.Router();
-const db             = require('../models/sql');
+//const db             = require('../models/sql');
 const sql            = require('../models/db');
 const User           = require('../models/user');
 
@@ -41,14 +41,15 @@ router.get('/', ensureAdmin, (req, res) => {
   sql.getAllUsers((err, results) => {
     console.log('[admin-getAllUsers]');
     console.log(results);
-    for (let u in results) {
-      console.log(u);
+    //for (let u in results) {
+    for (let i = 0; i < results.length; i++) {
+      console.log(results[i]);
       let newUser = {
-        Name: u.name,
-        Id: u.UserId,
-        Username: u.Username,
-        Password: u.Hash,
-        Role: u.Role
+        Name: results[i].name,
+        Id: results[i].UserId,
+        Username: results[i].Username,
+        Password: results[i].Hash,
+        Role: results[i].Role
       };
       list.push(newUser);
     }
@@ -69,9 +70,9 @@ router.get('/edit', ensureAdmin, (req, res) => {
     }
   });
   */
-  sql.getUserbyId(userId, (err, results, fields) => {
+  sql.getUserById(userId, (err, user, fields) => {
     if (!err) {
-      res.render('edit', { editUser: results[0]});
+      res.render('edit', { editUser: user});
     } else {
       req.flash('error_msg', 'Invalid user ID');
       res.redirect('/');
@@ -81,7 +82,7 @@ router.get('/edit', ensureAdmin, (req, res) => {
 
 router.get('/delete', ensureAdmin, (req, res) => {
   let userId = req.query.userId;
-  //console.log('deleting user ' + userId);
+  console.log('deleting user ' + userId);
   /*
   db.deleteUser(userId, () => {
     res.redirect('/admin');

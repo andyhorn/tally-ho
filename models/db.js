@@ -1,5 +1,5 @@
-const CREATE_USER_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS Users (UserId INTEGER PRIMARY KEY, Username NVARCHAR(256), Name NVARCHAR(256), Role NVARCHAR(64))';
-const CREATE_TALLY_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS Tally (TallyId INTEGER PRIMARY KEY, UserId INTEGER, Number INTEGER, Date VARCHAR(32))';
+const CREATE_USER_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS Users (UserId INTEGER AUTO_INCREMENT PRIMARY KEY, Username NVARCHAR(256), Name NVARCHAR(256), Hash NVARCHAR(512), Role NVARCHAR(64))';
+const CREATE_TALLY_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS Tally (TallyId INTEGER AUTO_INCREMENT PRIMARY KEY, UserId INTEGER, Number INTEGER, Date VARCHAR(32))';
 const USER_TALLIES_QUERY = 'SELECT * FROM Tally WHERE UserId = ? AND Date = ?';
 
 const User = require('./user');
@@ -69,6 +69,7 @@ module.exports.clearForUser = function(userId, date, callback) {
 module.exports.deleteUser = function(userId, callback) {
     connection.query('DELETE FROM Tally WHERE UserId = ?', [userId]);
     connection.query('DELETE FROM Users WHERE UserId = ?', [userId]);
+    callback();
 }
 
 module.exports.updateUser = function(user, callback) {
@@ -89,8 +90,11 @@ module.exports.updateUser = function(user, callback) {
 module.exports.getUserByUsername = function(username, callback) {
     connection.query('SELECT * FROM Users WHERE Username = ?', [username], (err, res, fields) => {
         if (err) throw err;
-        else
-            callback(res[0]);
+        else {
+            console.log('[getUserByUsername] user:');
+            console.log(res[0]);
+            callback(err, res[0]);
+        }
     });
 }
 
@@ -101,12 +105,16 @@ module.exports.getUserById = function(id, callback) {
 }
 
 module.exports.createUser = function(newUser, callback) {
+    console.log('[sql-CreateUser] creating new user');
     bcrypt.genSalt(12, (err, salt) => {
+        console.log('[sql-CreateUser] bcrypt salt generated');
         bcrypt.hash(newUser.password, salt, (err, hash) => {
+            console.log('[sql-CreateUser] password hashed');
             newUser.password = hash;
             connection.query('INSERT INTO Users (Username, Name, Hash, Role) VALUES (?,?,?,?)'
             , [newUser.username.toUpperCase(), newUser.name, newUser.password, newUser.role]
             , (err) => {
+                console.log('[sql-CreateUser] user created');
                 callback(err);
             });
         })

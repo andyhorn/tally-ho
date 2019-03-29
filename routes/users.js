@@ -3,7 +3,8 @@ const router       = express.Router();
 const User         = require('../models/user');
 const passport     = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const db           = require('../models/sql');
+//const db           = require('../models/sql');
+const sql           = require('../models/db');
 
 // Register route
 router.get('/register', (req, res) => {
@@ -39,12 +40,15 @@ router.post('/register', (req, res) => {
     //console.log(errors);
     res.render('register', { errors: errors });
   } else {
-    db.checkUsername(username, (exists) => {
-      //console.log('No errors!');
+    //db.checkUsername(username, (exists) => {
+    sql.checkUsername(username, (exists) => {
+      console.log('No errors!');
       if (exists) {
+        console.log('user already exists');
         req.flash('error_msg', 'Username already taken');
         res.redirect('/users/register');
       } else {
+        console.log('user is new!');
         let role = 'User';
         if (username == 'admin')
           role = 'Admin';
@@ -54,13 +58,17 @@ router.post('/register', (req, res) => {
           password: password,
           role: role
         };
-        User.createUser(newUser, (err) => {
+        //User.createUser(newUser, (err) => {
+        sql.createUser(newUser, (err) => {
           if (err) {
-            //console.log(err);
+            console.log(err);
+            req.flash('error_msg', 'There was an error registering.');
+            res.redirect('/register');
           }
           else {
             req.flash('success_msg', 'You are now registered!');
-            User.getUserByUsername(username, (err, user) => {
+            //User.getUserByUsername(username, (err, user) => {
+            sql.getUserByUsername(username, (err, user) => {
               req.login(user, (err) => {return res.redirect('/');});
             });
           }
@@ -72,10 +80,11 @@ router.post('/register', (req, res) => {
 
 passport.use(new LocalStrategy((username, password, done) => {
   //console.log('authenticating user ' + username);
-  User.getUserByUsername(username, (err, user) => {
-    //console.log('[LocalStrategy] err: ' + err);
-    //console.log('[LocalStrategy] user: ');
-    //console.log(user);
+  //User.getUserByUsername(username, (err, user) => {
+  sql.getUserByUsername(username, (err, user) => {
+    console.log('[LocalStrategy] err: ' + err);
+    console.log('[LocalStrategy] user: ');
+    console.log(user);
     if (err) return done(err);
     if (!user) return done(null, false, { message: 'Invalid username' });
     User.comparePasswords(password, user.Hash, (err, isMatch) => {
@@ -93,7 +102,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.getUserById(id, (err, user) => {
+  //User.getUserById(id, (err, user) => {
+  sql.getUserById(id, (err, user) => {
     done(err, user);
   });
 });

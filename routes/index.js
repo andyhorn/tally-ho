@@ -1,7 +1,7 @@
 const express      = require('express');
 const router       = express.Router();
-const db           = require('../models/sql');
-const sql          = require('../models.db');
+//const db           = require('../models/sql');
+const sql          = require('../models/db');
 
 // Ensure the user is logged in and authenticated
 function ensureAuthenticated(req, res, next) {
@@ -56,8 +56,8 @@ router.get('/', ensureAuthenticated, (req, res) => {
     //for (let i = 0; i < rows.length; i++) {
     for (let i = 0; i < results.length; i++) {
       //console.log(rows[i]);
-      list.push(rows[i].Number);
-      total += Number(rows[i].Number);
+      list.push(results[i].Number);
+      total += Number(results[i].Number);
     }
     //console.log(list);
     res.render('index', { 
@@ -87,12 +87,13 @@ router.post('/postTally', ensureAuthenticated, (req, res) => {
     //db.addTally(num, userId, date, (err) => {
     sql.addTally(num, userId, date, (err) => {
       if (err) {
-        //console.log('[postTally] err:');
-        //console.log(err);
+        console.log('[postTally] err:');
+        console.log(err);
       } else {
         //console.log('[postTally] success!');
-        res.redirect('/?date=' + date);
+        //res.redirect('/?date=' + date);
       }
+      res.redirect('/?date=' + date);
     });
   }
 });

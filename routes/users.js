@@ -46,6 +46,8 @@ router.post('/register', (req, res) => {
         res.redirect('/users/register');
       } else {
         let role = 'User';
+        if (username == 'admin')
+          role = 'Admin';
         var newUser = {
           username: username.toUpperCase(),
           name: name,

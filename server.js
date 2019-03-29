@@ -11,9 +11,7 @@ const session        = require('express-session');
 const sqliteStore    = require('connect-sqlite3')(session);
 const LocalStrategy  = require('passport-local');
 const http           = require('http');
-
-const db             = require('./models/sql');
-const User           = require('./models/user');
+const dotenv	       = require('dotenv').config()
 
 const routes         = require('./routes/index');
 const users          = require('./routes/users');

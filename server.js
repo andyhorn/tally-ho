@@ -18,7 +18,7 @@ const users          = require('./routes/users');
 const admin          = require('./routes/admin');
 
 // Static routes
-app.use(express.static(process.cwd() + '/public'));
+app.use(express.static(__dirname + '/public'));
 
 // View engine and controls
 app.set('views', path.join(__dirname, 'views/'));

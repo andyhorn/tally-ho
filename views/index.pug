@@ -33,14 +33,14 @@ block content
             div.col-md-4.offset-md-5.row
               div.col-md-5.m-0.p-1
                 a(href="/?date=" + prevDate) 
-                  button(type="button").btn.btn-info.btn-block Previous Day
+                  button(type="button").btn.btn-info Previous Day
               div.col-md-4.m-0.p-1
                 - today = day.toLocaleDateString()
                 a(href="/?date=" + nextDate)
-                  button(type="button").btn.btn-info.btn-block Next Day
+                  button(type="button").btn.btn-info Next Day
               div.col-md-3.m-0.p-1
                 a(href="/?date=" + today)
-                  button(type="button").btn.btn-info.btn-block Today
+                  button(type="button").btn.btn-info Today
     div.row
       div.col-12
         div#tallies

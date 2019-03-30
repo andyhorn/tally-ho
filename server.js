@@ -9,13 +9,11 @@ const pug            = require('pug');
 const passport       = require('passport');
 const session        = require('express-session');
 const sqliteStore    = require('connect-sqlite3')(session);
-const LocalStrategy  = require('passport-local');
-const http           = require('http');
-const dotenv	       = require('dotenv').config()
-
 const routes         = require('./routes/index');
 const users          = require('./routes/users');
 const admin          = require('./routes/admin');
+
+require('dotenv').config() // pull environmental variables
 
 // Static routes
 app.use(express.static(process.cwd() + '/public'));
@@ -73,25 +71,6 @@ app.use((req, res, next) => {
 app.use('/', routes);
 app.use('/users', users);
 app.use('/admin', admin);
-
-function timify(hour, min, sec) {
-  let time = '';
-  if (hour < 10)
-    time += '0';
-  time += hour + ':';
-  if (min < 10)
-    time += '0';
-  time += min + ':';
-  if (sec < 10)
-    time += '0';
-  time += sec;
-  return time;
-}
-
-app.get('/wake', (req, res) => {
-  console.log('woken up!');
-  res.sendStatus(200);
-});
 
 app.get('*', (req, res) => {
   res.render('not-found');

@@ -1,7 +1,6 @@
 const express        = require('express');
 const app            = express();
 const router         = express.Router();
-//const db             = require('../models/sql');
 const sql            = require('../models/db');
 const User           = require('../models/user');
 
@@ -16,28 +15,7 @@ function ensureAdmin(req, res, next) {
 
 // Admin portal
 router.get('/', ensureAdmin, (req, res) => {
-  //if (req.user.role != 'Admin') res.redirect('/');
-  //console.log('[adminPortal] user:')
-  //console.log(req.user);
   let list = new Array();
-  /*
-  db.serialize(() => {
-    db.each("SELECT * FROM Users;", (err, user) => {
-      console.log(user);
-      let newUser = {
-        Name: user.Name,
-        Id: user.UserId,
-        Username: user.Username,
-        Password: user.Hash,
-        Role: user.Role
-      };
-      //console.log(newUser);
-      list.push(newUser);
-    }, (err, num) => {
-      res.render('admin', { users: list, myId: req.user.UserId }); 
-    });
-  });
-  */
   sql.getAllUsers((err, results) => {
     console.log('[admin-getAllUsers]');
     console.log(results);
@@ -59,17 +37,6 @@ router.get('/', ensureAdmin, (req, res) => {
 
 router.get('/edit', ensureAdmin, (req, res) => {
   let userId = req.query.userId;
-  //console.log('userId: ' + userId);
-  /*
-  User.getUserById(userId, (err, user) => {
-    if (!err) {
-      res.render('edit', { editUser: user }); 
-    } else {
-      req.flash('error_msg', 'Invalid user ID');
-      res.redirect('/');
-    }
-  });
-  */
   sql.getUserById(userId, (err, user, fields) => {
     if (!err) {
       res.render('edit', { editUser: user});
@@ -83,11 +50,6 @@ router.get('/edit', ensureAdmin, (req, res) => {
 router.get('/delete', ensureAdmin, (req, res) => {
   let userId = req.query.userId;
   console.log('deleting user ' + userId);
-  /*
-  db.deleteUser(userId, () => {
-    res.redirect('/admin');
-  });
-  */
   sql.deleteUser(userId, () => {
     res.redirect('/admin');
   })
@@ -115,13 +77,6 @@ router.post('/saveUser', ensureAdmin, (req, res) => {
       UserId: userId,
       Password: password
     };
-    /*
-    db.updateUser(update, (err) => {
-      if (err)
-        res.flash('error_msg', err);
-      res.redirect('/admin');
-    });
-    */
     sql.updateUser(update, (err) => {
       if (err)
         res.flash('error_msg', err);

@@ -73,14 +73,10 @@ module.exports.deleteUser = function(userId, callback) {
 }
 
 module.exports.updateUser = function(user, callback) {
-    let newName = user.Name,
-        newUsername = user.Username.toUpperCase(),
-        newRole = user.Role,
-        newPassword = user.Password || null;
     connection.query('UPDATE Users SET Name = ?, Username = ?, Role = ? WHERE UserId = ?',
     [user.Name, user.Username.toUpperCase(), user.Role, user.UserId]);
-    if (newPassword) {
-        User.genPassword(newPassword, (hash) => {
+    if (user.Password) {
+        User.genPassword(user.Password, (hash) => {
             connection.query('UPDATE Users SET Hash = ? WHERE UserId = ?', [hash, userId]);
         })
     }

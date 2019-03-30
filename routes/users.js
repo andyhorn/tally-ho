@@ -3,7 +3,6 @@ const router       = express.Router();
 const User         = require('../models/user');
 const passport     = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-//const db           = require('../models/sql');
 const sql           = require('../models/db');
 
 // Register route
@@ -36,11 +35,8 @@ router.post('/register', (req, res) => {
   let errors = req.validationErrors();
   
   if (errors) {
-    //console.log('Errors exist');
-    //console.log(errors);
     res.render('register', { errors: errors });
   } else {
-    //db.checkUsername(username, (exists) => {
     sql.checkUsername(username, (exists) => {
       console.log('No errors!');
       if (exists) {
@@ -58,7 +54,6 @@ router.post('/register', (req, res) => {
           password: password,
           role: role
         };
-        //User.createUser(newUser, (err) => {
         sql.createUser(newUser, (err) => {
           if (err) {
             console.log(err);
@@ -67,7 +62,6 @@ router.post('/register', (req, res) => {
           }
           else {
             req.flash('success_msg', 'You are now registered!');
-            //User.getUserByUsername(username, (err, user) => {
             sql.getUserByUsername(username, (err, user) => {
               req.login(user, (err) => {return res.redirect('/');});
             });
@@ -79,17 +73,10 @@ router.post('/register', (req, res) => {
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
-  //console.log('authenticating user ' + username);
-  //User.getUserByUsername(username, (err, user) => {
   sql.getUserByUsername(username, (err, user) => {
-    console.log('[LocalStrategy] err: ' + err);
-    console.log('[LocalStrategy] user: ');
-    console.log(user);
     if (err) return done(err);
     if (!user) return done(null, false, { message: 'Invalid username' });
     User.comparePasswords(password, user.Hash, (err, isMatch) => {
-      //console.log('[comparePasswords] password: ' + password);
-      //console.log('[comparePasswords] isMatch: ' + isMatch);
       if (err) return done(err);
       if (!isMatch) return done(null, false, { message: 'Invalid password' });
       return done(null, user);
@@ -102,7 +89,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  //User.getUserById(id, (err, user) => {
   sql.getUserById(id, (err, user) => {
     done(err, user);
   });
@@ -122,7 +108,6 @@ router.post('/login', passport.authenticate('local', {
 // Process a logout
 router.get('/logout', (req, res) => {
   req.flash('success_msg', 'You are logged out');
-  //req.session.destroy();
   req.logout();
   res.redirect('/users/login');
 });

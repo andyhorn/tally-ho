@@ -6,7 +6,7 @@ const User = require('./user');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     host: process.env.SQL_HOST,
     user : process.env.SQL_USER,
     password : process.env.SQL_PASSWORD,

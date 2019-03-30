@@ -76,7 +76,7 @@ app.get('*', (req, res) => {
   res.render('not-found');
 });
 
-require('./models/db').init();
+//require('./models/db').init();
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {

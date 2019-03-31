@@ -15,6 +15,9 @@ const admin          = require('./routes/admin');
 
 require('dotenv').config() // pull environmental variables
 
+console.log('environmental variables:')
+console.log('hostname: ' + process.env.SQL_HOST)
+
 // Static routes
 app.use(express.static(__dirname + '/public'));
 

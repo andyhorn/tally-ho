@@ -22,8 +22,7 @@ router.post('/register', (req, res) => {
   // Get all the user values
   let username = req.body.username,
       name = req.body.name,
-      password = req.body.password,
-      passwordConfirmation = req.body.passwordConfirmation;
+      password = req.body.password;
   
   // Validation - use req.checkBody(param, error_msg).function() to perform validation
   req.checkBody('username', 'Username is required').notEmpty();

@@ -17,11 +17,11 @@ function ensureAdmin(req, res, next) {
 router.get('/', ensureAdmin, (req, res) => {
   let list = new Array();
   sql.getAllUsers((err, results) => {
-    console.log('[admin-getAllUsers]');
-    console.log(results);
+    //console.log('[admin-getAllUsers]');
+    //console.log(results);
     //for (let u in results) {
     for (let i = 0; i < results.length; i++) {
-      console.log(results[i]);
+      //console.log(results[i]);
       let newUser = {
         Name: results[i].name,
         Id: results[i].UserId,

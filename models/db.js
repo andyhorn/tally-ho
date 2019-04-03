@@ -33,17 +33,17 @@ module.exports.init = () => {
 }
 
 module.exports.getUserTallies = function(userId, date, callback) {
-    console.log('[getUserTallies] userId: ' + userId);
-    console.log('[getUserTallies] date: ' + date);
+    //console.log('[getUserTallies] userId: ' + userId);
+    //console.log('[getUserTallies] date: ' + date);
     connection.query(USER_TALLIES_QUERY, [userId, date], (err, res, fields) => {
         callback(err, res);
     });
 }
 
 module.exports.addTally = function(number, userId, date, callback) {
-    console.log('[addTally] Number: ' + number);
-    console.log('[addTally] UserId: ' + userId);
-    console.log('[addTally] Date: ' + date);
+    //console.log('[addTally] Number: ' + number);
+    //console.log('[addTally] UserId: ' + userId);
+    //console.log('[addTally] Date: ' + date);
     connection.query('INSERT INTO Tally (Number, UserId, Date) VALUES (?,?,?)', [number, userId, date]
     , (err, results, fields) => {
         callback(err);
@@ -53,7 +53,7 @@ module.exports.addTally = function(number, userId, date, callback) {
 module.exports.checkUsername = function(username, callback) {
     connection.query('SELECT SUM(UserId) FROM Users WHERE Username = ?', [username]
     , (err, results, fields) => {
-        console.log(results);
+        //console.log(results);
         if (results[0] && results[0].SUM && Number(results[0].SUM) > 0)
             callback(true);
         else
@@ -89,8 +89,8 @@ module.exports.getUserByUsername = function(username, callback) {
     connection.query('SELECT * FROM Users WHERE Username = ?', [username], (err, res, fields) => {
         if (err) throw err;
         else {
-            console.log('[getUserByUsername] user:');
-            console.log(res[0]);
+            //console.log('[getUserByUsername] user:');
+            //console.log(res[0]);
             callback(err, res[0]);
         }
     });
@@ -121,10 +121,10 @@ module.exports.createUser = function(newUser, callback) {
 
 module.exports.getAllUsers = function(callback) {
     connection.query('SELECT * FROM Users', (error, results, fields) => {
-        console.log('[getAllUsers] error: ');
-        console.log(error);
-        console.log('[getAllUsers] results: ');
-        console.log(results);
+        //console.log('[getAllUsers] error: ');
+        //console.log(error);
+        //console.log('[getAllUsers] results: ');
+        //console.log(results);
         callback(error, results);
     });
 }

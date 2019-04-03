@@ -96,7 +96,8 @@ passport.deserializeUser((id, done) => {
 // Process a login
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/users/login',
-    failureFlash: true
+    failureFlash: true,
+    successRedirect: '/'
 }), (req, res) => {
   if (req.user.Role == 'Admin')
     res.redirect('../admin');

@@ -5,18 +5,31 @@ const cookieParser   = require('cookie-parser');
 const path           = require('path');
 const flash          = require('connect-flash');
 const app            = express();
+const helmet         = require('helmet');
 const pug            = require('pug');
 const passport       = require('passport');
 const session        = require('express-session');
 const sqliteStore    = require('connect-sqlite3')(session);
+
 const routes         = require('./routes/index');
 const users          = require('./routes/users');
 const admin          = require('./routes/admin');
 
 require('dotenv').config() // pull environmental variables
 
-console.log('environmental variables:')
-console.log('hostname: ' + process.env.SQL_HOST)
+app.use(helmet({
+  frameguard: {
+    action: 'deny'
+  },
+  hidePoweredBy: {},
+  hsts: {
+    maxAge: 90 * 24 * 60 * 60 * 1000,
+    force: true
+  },
+  ieNoOpen: {},
+  noSniff: {},
+  xssFilter: {}
+}));
 
 // Static routes
 app.use(express.static(__dirname + '/public'));

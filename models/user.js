@@ -1,4 +1,4 @@
-const SALT_ROUNDS = 10;
+const SALT_ROUNDS = 12;
 const bcrypt  = require('bcrypt');
 
 module.exports.genPassword = (plainText, callback) => {

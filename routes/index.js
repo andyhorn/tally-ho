@@ -1,6 +1,7 @@
-const express      = require('express');
-const router       = express.Router();
-const sql          = require('../models/db');
+const express       = require('express');
+const router        = express.Router();
+const sql           = require('../models/db');
+const moment        = require('moment');
 
 // Ensure the user is logged in and authenticated
 function ensureAuthenticated(req, res, next) {
@@ -14,25 +15,13 @@ function ensureAuthenticated(req, res, next) {
 // Get the homepage
 router.get('/', ensureAuthenticated, (req, res) => {
   let list = new Array();
-  let today,
-      currentDate,
-      nextDate,
-      prevDate;
-  today = new Date();
-  today = today.toLocaleDateString();
-  if (req.query.date)
-    currentDate = new Date(req.query.date);
-  else {
-    currentDate = new Date(today);
-  }
-  nextDate = new Date();
-  nextDate.setDate(currentDate.getDate() + 1);
-  prevDate = new Date();
-  prevDate.setDate(currentDate.getDate() - 1);
-  currentDate = currentDate.toLocaleDateString();
-  nextDate = nextDate.toLocaleDateString();
-  prevDate = prevDate.toLocaleDateString();
-    sql.getUserTallies(req.user.UserId, currentDate, (err, results) => {
+  let dates = getDates(req.query.date);
+
+  sql.getUserTallies(req.user.UserId, dates.viewDate, (err, results) => {
+    if (err) {
+      req.flash('error_msg', 'There was an error retrieving data.');
+      res.redirect('/');
+    }
     let total = 0;
     for (let i = 0; i < results.length; i++) {
       list.push(results[i].Number);
@@ -41,10 +30,10 @@ router.get('/', ensureAuthenticated, (req, res) => {
     res.render('index', { 
       tallies: list, 
       total: total,
-      today: today,
-      currentDate: currentDate,
-      prevDate: prevDate,
-      nextDate: nextDate
+      today: dates.today,
+      viewDate: dates.viewDate,
+      previousDate: dates.previousDate,
+      nextDate: dates.nextDate
     });
   });
 });
@@ -72,3 +61,22 @@ router.get('/clear', ensureAuthenticated, (req, res) => {
 });
 
 module.exports = router;
+
+function getDates(query) {
+  console.log('creating date object...');
+  let dateObject = {},
+      today = moment(),
+      viewDate = query != null ? moment(query, 'M/D/YYYY') : today.clone(),
+      nextDate = viewDate.clone().add(1, 'd'),
+      previousDate = viewDate.clone().subtract(1, 'd');
+
+  dateObject.today = today.format('M/D/YYYY');
+  dateObject.nextDate = nextDate.format('M/D/YYYY');
+  dateObject.previousDate = previousDate.format('M/D/YYYY');
+  dateObject.viewDate = viewDate.format('M/D/YYYY');
+
+  console.log('done!');
+  for(let key in dateObject)
+    console.log(`${key}: ${dateObject[key]}`);
+  return dateObject;
+}

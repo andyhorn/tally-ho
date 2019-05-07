@@ -20,6 +20,7 @@
     "express-validator": "^5.3.1",
     "helmet": "^3.16.0",
     "http": "*",
+    "moment": "^2.24.0",
     "mysql": "^2.16.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

@@ -10,23 +10,23 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.6",
     "connect-flash": "^0.1.1",
     "connect-sqlite3": "^0.9.11",
     "cookie-parser": "^1.4.4",
     "dotenv": "^7.0.0",
-    "express": "^4.16.4",
-    "express-session": "^1.15.6",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "express-validator": "^5.3.1",
-    "helmet": "^3.16.0",
+    "helmet": "^3.18.0",
     "http": "*",
     "moment": "^2.24.0",
-    "mysql": "^2.16.0",
+    "mysql": "^2.17.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "pug": "^2.0.3",
-    "sqlite3": "^4.0.6"
+    "pug": "^2.0.4",
+    "sqlite3": "^4.0.9"
   },
   "engines": {
     "node": "8.x"
